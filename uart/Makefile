@@ -1,6 +1,6 @@
-RISCV_PREFIX = riscv32-unknown-elf-
+RISCV_PREFIX = riscv64-unknown-elf-
 CC = $(RISCV_PREFIX)gcc 
-CCFLAGS = -nostdlib -fno-builtin  -Iinclude -T link.lds
+CCFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -MD -mcmodel=medany -nostdlib -fno-builtin  -Iinclude -T link.lds
 ASMFLAGS = -Iinclude
 
 OUT_FILE = kernel
@@ -18,10 +18,10 @@ dump:
 	$(RISCV_PREFIX)objdump -D $(BUILD_DIR)/kernel
 
 run:
-	qemu-system-riscv32 -m 2048M  -nographic -smp 1 -machine sifive_e -bios none -kernel $(BUILD_DIR)/kernel
+	qemu-system-riscv64 -m 2048M   -nographic -smp 1 -machine virt -bios none -kernel $(BUILD_DIR)/kernel
 
 debug:
-	qemu-system-riscv32 -m 2048M -nographic -smp 1 -machine sifive_e -bios none -monitor telnet:127.0.0.1:1234,server,nowait -kernel $(BUILD_DIR)/kernel
+	qemu-system-riscv64 -m 2048M -nographic -smp 1 -machine virt -bios none -monitor telnet:127.0.0.1:1234,server,nowait -kernel $(BUILD_DIR)/kernel
 
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c

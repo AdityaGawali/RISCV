@@ -1,9 +1,10 @@
 #include "uart.h"
+#include "printf.h"
 
 void putchar(uint8_t data)
 {	
-	while (*(U_TX_DATA) & 0x80000000);
-    *(U_TX_DATA) = data;
+	while((*(U_LSR) & U_DATA_EMPTY)== 0);
+	*(U_DR) = data;
 }
 
 void putstring(char *s)
@@ -14,8 +15,10 @@ void putstring(char *s)
     }
     putchar('\n');
 }
-
-void putc ( void* p, char c)
+// putc function definer here
+// putc function declared in printf.h
+void _putchar(char character)
 {
-	putchar(c);
+	putchar(character);
+
 }

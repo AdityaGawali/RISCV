@@ -1,7 +1,8 @@
 #include "uart.h"
 
 
-void main() 
+int main() 
 {	
-    putstring("HELLLLLLLLLOOOOOOOOOOO BOOOOOYYYYY");
+    putstring("UART\n");
+    return 0;
 }

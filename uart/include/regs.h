@@ -3,18 +3,16 @@
 
 #include "inttypes.h"
 
-#define __REG_TYPE volatile uint32_t
-#define __REG __REG_TYPE*
+#define __REG_TYPE_32 volatile uint32_t
+#define __REG_32 __REG_TYPE_32*
 
-#define UART_BASE ((__REG_TYPE) 0x10013000)
+#define __REG_TYPE_8 volatile uint8_t
+#define __REG_8 __REG_TYPE_8*
 
-
-#define U_TX_DATA ((__REG) (UART_BASE + 0x00))
-#define U_RX_DATA ((__REG) (UART_BASE + 0x04))
-#define U_TX_CTRL ((__REG) (UART_BASE + 0x08))
-#define U_RX_CTRL ((__REG) (UART_BASE + 0x0C))
-#define U_IENB ((__REG) (UART_BASE + 0x10))
-#define U_IPEND ((__REG) (UART_BASE + 0x14))
-#define U_B_DIV ((__REG) (UART_BASE + 0x18))
-
+//-----//
+#define UART_BASE ((__REG_TYPE_32) 0x10000000)
+#define U_DR ((__REG_8)(UART_BASE + 0))
+#define U_LSR ((__REG_8)(UART_BASE + 5))
+#define U_DATA_EMPTY (1<<6)
+//-----//
 #endif

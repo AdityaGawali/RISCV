@@ -2,8 +2,8 @@
 
 void putchar(uint8_t data)
 {	
-	while (*(U_TX_DATA) & 0x80000000);
-    *(U_TX_DATA) = data;
+	while((*(U_LSR) & U_DATA_EMPTY)== 0);
+	*(U_DR) = data;
 }
 
 void putstring(char *s)

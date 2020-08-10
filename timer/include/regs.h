@@ -3,37 +3,23 @@
 
 #include "inttypes.h"
 
-#define _REG_TYPE_32 volatile uint32_t
-#define _REG_32 _REG_TYPE_32*
+#define __REG_TYPE_32 volatile uint32_t
+#define __REG_32 __REG_TYPE_32*
 
-#define _REG_TYPE_64 volatile uint64_t
-#define _REG_64 _REG_TYPE_64*
+#define __REG_TYPE_8 volatile uint8_t
+#define __REG_8 __REG_TYPE_8*
 
-#define UART_BASE ((_REG_TYPE_32) 0x10013000)
+#define __REG_TYPE_64 volatile uint64_t
+#define __REG_64 __REG_TYPE_64*
 
-
-#define U_TX_DATA ((_REG_32) (UART_BASE + 0x00))
-#define U_RX_DATA ((_REG_32) (UART_BASE + 0x04))
-#define U_TX_CTRL ((_REG_32) (UART_BASE + 0x08))
-#define U_RX_CTRL ((_REG_32) (UART_BASE + 0x0C))
-#define U_IENB ((_REG_32) (UART_BASE + 0x10))
-#define U_IPEND ((_REG_32) (UART_BASE + 0x14))
-#define U_B_DIV ((_REG_32) (UART_BASE + 0x18))
-
-#define M_TIME ((_REG_64)(0x0200BFF8))
-#define M_TIME_CMP ((_REG_64)(0x02004000))
-
-#define read_csr(reg) ({ unsigned long __tmp; \
-  asm volatile ("csrr %0, " #reg : "=r"(__tmp)); \
-  __tmp; })
-
-#define write_csr(reg, val) ({ \
-  asm volatile ("csrw " #reg ", %0" :: "rK"(val)); })
-
-
-#define MCAUSE_INT      0x80000000UL
-#define MCAUSE_CAUSE    0x000003FFUL
-#define MSTATUS_MIE_BIT     (3)  // global interrupt enable bit mask. 
-#define MIE_MTIE_BIT        (7)  //Timer interrupt enable bit mask
+//-----//
+#define UART_BASE ((__REG_TYPE_32) 0x10000000)
+#define U_DR ((__REG_8)(UART_BASE + 0))
+#define U_LSR ((__REG_8)(UART_BASE + 5))
+#define U_DATA_EMPTY (1<<6)
+//-----//
+#define CLINT_BASE ((__REG_TYPE_32) 0x02000000)
+#define CLINT_M_TIME_CMP ((__REG_64)(CLINT_BASE + 0x4000))
+#define CLINT_M_TIME ((__REG_64)(CLINT_BASE + 0xBFF8))
 
 #endif

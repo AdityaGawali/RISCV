@@ -4,8 +4,7 @@ ENTRY( _start )
 
 MEMORY
 {
-  flash (rxai!w) : ORIGIN = 0x20400000, LENGTH = 128M
-  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 64K
+  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 128M
 }
 
 PHDRS
@@ -21,13 +20,13 @@ SECTIONS
     PROVIDE(_text_start = .);
     *(.text.init) *(.text .text.*)
     PROVIDE(_text_end = .);
-  } >flash AT>flash :text
+  } >ram AT>ram :text
 
   .rodata : {
     PROVIDE(_rodata_start = .);
     *(.rodata .rodata.*)
     PROVIDE(_rodata_end = .);
-  } >flash AT>flash :text
+  } >ram AT>ram :text
 
   .data : {
     . = ALIGN(4096);
