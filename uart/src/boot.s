@@ -10,11 +10,15 @@
 .section .text.init,"ax",@progbits
 .globl _start
 
+
 _start:
     # setup default trap vector
-    la      t0, trap_vector
-    csrw    mtvec, t0
-
+   # la      t0, trap_vector
+   # csrw    mtvec, t0
+    # li t0, 8
+    # csrw mstatus, t0
+    # li t0, 128
+    # csrw mie, t0
     # set up stack pointer based on hartid
     csrr    t0, mhartid
     slli    t0, t0, STACK_SHIFT
@@ -22,18 +26,24 @@ _start:
     add     sp, sp, t0
 
     # park all harts excpet hart 0
-    csrr    a0, mhartid
-    bnez    a0, park
+    # csrr    a0, mhartid
+   # bnez    a0, park
 
-    # jump to libfemto_start_main
+    csrr a0, mhartid
+    addi a0, a0, -1
+    bnez a0, park
+    # jump to main
     j       main
 
     # sleeping harts mtvec calls trap_fn upon receiving IPI
+
+
+
 park:
     wfi
     j       park
 
-    .align 2
+    .align 4
 trap_vector:
     # Save registers.
     addi    sp, sp, -CONTEXT_SIZE
@@ -58,12 +68,15 @@ trap_vector:
     mv      a0, sp
     csrr    a1, mcause
     csrr    a2, mepc
-    #jal     trap_handler
+    # call     trap_handler
 
     # Restore registers.
     lxsp    ra, 0
     lxsp    a0, 1
     lxsp    a1, 2
+
+
+
     lxsp    a2, 3
     lxsp    a3, 4
     lxsp    a4, 5

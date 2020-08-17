@@ -8,6 +8,7 @@ OUT_FILE = kernel
 BUILD_DIR = build
 SRC_DIR = src
 
+WINDOWS_EXE = .exe
 
 all: kernel
 
@@ -18,10 +19,10 @@ dump:
 	$(RISCV_PREFIX)objdump -D $(BUILD_DIR)/kernel
 
 run:
-	qemu-system-riscv64 -m 2048M   -nographic -smp 1 -machine virt -bios none -kernel $(BUILD_DIR)/kernel
+	qemu-system-riscv64$(WINDOWS_EXE) -m 2048M   -nographic -smp 2 -machine sifive_u -bios none -kernel $(BUILD_DIR)/kernel
 
 debug:
-	qemu-system-riscv64 -m 2048M -nographic -smp 1 -machine virt -bios none -monitor telnet:127.0.0.1:1234,server,nowait -kernel $(BUILD_DIR)/kernel
+	qemu-system-riscv64$(WINDOWS_EXE) -m 2048M -nographic -smp 2 -machine sifive_u -bios none -monitor telnet:127.0.0.1:1234,server,nowait -kernel $(BUILD_DIR)/kernel
 
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
